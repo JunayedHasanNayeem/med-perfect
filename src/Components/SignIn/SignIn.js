@@ -8,15 +8,12 @@ import { Link, useLocation, useHistory } from 'react-router-dom';
 const SignIn = () => {
     const { signInUsingGoogle, signInUsingEmail, errorMessage } = useAuth()
     //User redirect to their specific URL
+    const history = useHistory();
     const location = useLocation()
-    const history = useHistory()
     const redirect_uri = location.state?.from || '/' ;
     //Google sign in
     const handleSignInUsingGoogle = () => {
-        signInUsingGoogle()
-        .then(result => {
-            history.push(redirect_uri)
-        })
+        signInUsingGoogle(redirect_uri, history)
     }
 
     const [email, setEmail] = useState({})
@@ -30,10 +27,7 @@ const SignIn = () => {
     }
     //Email Sign In
     const handleSignInUsingEmail = () => {
-        signInUsingEmail(email, password)
-        .then(result => {
-            history.push(redirect_uri)
-        })
+        signInUsingEmail(email, password, redirect_uri, history)
     }
 
     return (

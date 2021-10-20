@@ -12,15 +12,12 @@ const SignUp = () => {
     const [password, setPassword] = useState({})
     const [fullName, setFullName] = useState({})
     //User redirect to their specific URL
+    const history = useHistory();
     const location = useLocation()
-    const history = useHistory()
     const redirect_uri = location.state?.from || '/' ;
     //Google sign in
     const handleSignUpUsingGoogle = () => {
-        signInUsingGoogle()
-        .then(result => {
-            history.push(redirect_uri)
-        })
+        signInUsingGoogle(redirect_uri, history)
     }
 
     const handleEmail = (event) => {
@@ -32,10 +29,7 @@ const SignUp = () => {
     
     //Email Sign up
     const handleSignUpUsingEmail = () => {
-        signUpUsingEmail(email, password, fullName)
-        .then(result => {
-            history.push(redirect_uri)
-        })
+        signUpUsingEmail(email, password, fullName, redirect_uri, history)
     }
 
     const handleFullName = (event) => {

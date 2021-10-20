@@ -10,12 +10,13 @@ const useFirebase = () => {
     const [errorMessage, setErrorMessage] = useState('')
     
     //Google sign in
-    const signInUsingGoogle = ()=> {
+    const signInUsingGoogle = (redirect_uri, history)=> {
         const googleProvider = new GoogleAuthProvider();
-        return signInWithPopup(auth, googleProvider)
+        signInWithPopup(auth, googleProvider)
          .then(result =>{
-             setUser(result.user)
+            setUser(result.user)
             setErrorMessage('')
+            history.push(redirect_uri)
          })
         .catch(error =>
             setErrorMessage(error.message)
@@ -26,23 +27,27 @@ const useFirebase = () => {
     };
 
     //Email and password sign up
-    const signUpUsingEmail = (email, password, fullName) =>{
-        return createUserWithEmailAndPassword(auth, email, password)
+    const signUpUsingEmail = (email, password, fullName, redirect_uri, history) =>{
+        createUserWithEmailAndPassword(auth, email, password)
         .then(result =>{
             setUser(result.user)
             setUserName(fullName)
             setErrorMessage('')
+            history.push(redirect_uri)
+            window.location.reload();
         })
         .catch(error =>
             setErrorMessage(error.message)
             )
     }
     //Email and password sign ins
-    const signInUsingEmail = (email, password) =>{
-        return signInWithEmailAndPassword(auth, email, password)
+    const signInUsingEmail = (email, password, redirect_uri, history) =>{
+        signInWithEmailAndPassword(auth, email, password)
         .then(result =>{
             setUser(result.user)
             setErrorMessage('')
+            history.push(redirect_uri)
+            window.location.reload(); 
         })
         .catch(error =>
             setErrorMessage(error.message)
